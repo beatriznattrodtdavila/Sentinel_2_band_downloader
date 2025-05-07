@@ -280,11 +280,11 @@ class Connections:
             #### Trying to download specific bands #########################
             url_1 = response.json()['result'][0]["Nodes"]['uri']
             response_1 = session.get(url_1, headers=headers, stream=True)
-            url_2 = response_1.json()['result'][1]["Nodes"]["uri"]
+            url_2 = next(item['Nodes']['uri'] for item in response_1.json().get('result', []) if item.get('Id') == 'GRANULE')
             response_2 = session.get(url_2, headers=headers, stream=True)
             url_3 = response_2.json()["result"][0]["Nodes"]["uri"]
             response_3 = session.get(url_3, headers=headers, stream=True)
-            url_4 = response_3.json()["result"][1]["Nodes"]["uri"]
+            url_4 = next(item['Nodes']['uri'] for item in response_3.json().get('result', []) if item.get('Id') == 'IMG_DATA')
             response_4 = session.get(url_4, headers=headers, stream=True)
             
             # Mapping resolution to url_index
